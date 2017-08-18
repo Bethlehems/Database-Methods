@@ -38,20 +38,24 @@ public class Student {
     }
 
     public void getClearanceInfo() throws Exception {
+        Scanner scn = new Scanner(System.in);
         User usr = new User();
         try {
-            Clearance clr = new Clearance();
-            String SQL1 = "SELECT * FROM Clearance";
-            ResultSet rs2 = usr.connection().executeQuery(SQL1);
+            String SQL2 = " SELECT Student.Student_ID, Student.Full_Name, Clearance.Description FROM Student INNER JOIN Clearance ON Student.Student_ID = Clearance.Stud_ID";
+            ResultSet rs3 = usr.connection1().executeQuery(SQL2);
             System.out.println("Enter your ID:");
+            String inp = scn.nextLine();
+
             boolean found = false;
-            while (rs2.next()) {
-                if (rs2.getString("Stud_ID").compareTo(getStudID()) == 0) {
-                    System.out.println(getFullName());
-                    System.out.println(getStudID());
-                    System.out.println(clr.getDecription());
+            while (rs3.next()) {
+                if (rs3.getString("Student_ID").compareTo(inp) == 0) {
+
+                    System.out.println(rs3.getString("Full_Name"));
+                    System.out.println(rs3.getString("Student_ID"));
+                    System.out.println(rs3.getString("Description"));
                     found = true;
                     break;
+
                 }
             }
             if (found == false) {
@@ -65,6 +69,12 @@ public class Student {
     }
 
     public static void main(String[] args) throws Exception {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         Student std = new Student();
         std.getClearanceInfo();
     }

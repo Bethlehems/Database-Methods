@@ -12,9 +12,9 @@ public class User {
     private Student stdt = new Student();
     private Clearance clr = new Clearance();
 
-    public static Statement connection() {
+    public static Statement connection1() {
         try {
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/Clearance_System", "root", "made2begr8");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/SampleDb", "root", "made2begr8");
             Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
             return stmt;
@@ -23,6 +23,7 @@ public class User {
         }
         return null;
     }
+
 
     public void login() {
         Scanner inp = new Scanner(System.in);
@@ -57,23 +58,18 @@ public class User {
         stdt.setStudID(input.nextLine());
         System.out.println("Description");
         clr.setDescription(input.nextLine());
-        Statement stm = connection();
+
+        Statement stm2 = connection1();
 
         try {
-
-            String SQL = "SELECT * FROM Student";
-            ResultSet rs = stm.executeQuery(SQL);
-            String SQL1 = "SELECT * FROM Clearance";
-            ResultSet rs1 = stm.executeQuery(SQL1);
+            String SQL = "SELECT * FROM Clearance";
+            ResultSet rs = stm2.executeQuery(SQL);
             boolean found = false;
-
             while (rs.next()) {
                 if (rs.getString("Stud_ID").compareTo(stdt.getStudID()) == 0) {
-                    rs1.updateString("Description", clr.getDecription());
-                    rs1.updateString("Stud_ID", stdt.getStudID());
-                    rs1.updateRow();
+                    rs.updateString("Description", clr.getDecription());
+                    rs.updateRow();
                     System.out.println("Submitted.");
-                    System.out.println(clr.getDecription());
                     found = true;
                     break;
 

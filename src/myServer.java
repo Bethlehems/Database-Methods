@@ -7,10 +7,12 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.sql.*;
 import java.lang.Object;
+
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import org.json.simple.JSONValue;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,11 +55,11 @@ public class myServer {
         public void handle(HttpExchange t) throws IOException {
             try {
                 //Connection con = DriverManager.getConnection("jdbc:mysql://localhost/SampleDb", "root", "made2begr8");
-                Student std=new Student();
+                Student std = new Student();
                 //Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
                 //String SQL = "SELECT * FROM Student";
                 //ResultSet rs =stmt.executeQuery(SQL);
-                String result=JSONValue.toJSONString(std.getClearanceInfo());
+                String result = JSONValue.toJSONString(std.getClearanceInfo());
                 //System.out.println(result);
                 t.sendResponseHeaders(200, result.length());
                 OutputStream os = t.getResponseBody();
@@ -68,28 +70,30 @@ public class myServer {
             } catch (Exception err) {
                 System.out.println(err.getMessage());
             }
-        }}
-   /* static class ClearanceHandler implements HttpHandler {
-        @Override
-        public void handle(HttpExchange t) throws IOException {
-            try {
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost/SampleDb", "root", "made2begr8");
+        }
+    }
 
-                Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                String SQL = "SELECT * FROM Clearance";
-                ResultSet rs =stmt.executeQuery(SQL);
-                String result=getJSONFromResultSet(rs,"Clearance");
-                t.sendResponseHeaders(200, result.length());
-                OutputStream os = t.getResponseBody();
-                os.write(result.getBytes());
-                os.close();
+    /* static class ClearanceHandler implements HttpHandler {
+         @Override
+         public void handle(HttpExchange t) throws IOException {
+             try {
+                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost/SampleDb", "root", "made2begr8");
+
+                 Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+                 String SQL = "SELECT * FROM Clearance";
+                 ResultSet rs =stmt.executeQuery(SQL);
+                 String result=getJSONFromResultSet(rs,"Clearance");
+                 t.sendResponseHeaders(200, result.length());
+                 OutputStream os = t.getResponseBody();
+                 os.write(result.getBytes());
+                 os.close();
 
 
-            } catch (SQLException err) {
-                System.out.println(err.getMessage());
-            }
-        }}*/
-    public static void main(String[] args) throws Exception{
+             } catch (SQLException err) {
+                 System.out.println(err.getMessage());
+             }
+         }}*/
+    public static void main(String[] args) throws Exception {
         HttpServer server = HttpServer.create(new InetSocketAddress(8089), 0);
         server.createContext("/student", new StudentHandler());
         //server.createContext("/clearance", new ClearanceHandler());

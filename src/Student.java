@@ -27,15 +27,16 @@ public class Student {
         return this.StudID;
     }
 
-    public void  setDep(String depar) {
+    public void setDep(String depar) {
 
-        Dep=depar;
+        Dep = depar;
     }
 
     public void setStudID(String studID) {
 
         StudID = studID;
     }
+
     public void setStudFullName(String name) {
 
         FullName = name;
@@ -44,8 +45,8 @@ public class Student {
     public String getClearanceInfo() throws Exception {
         Scanner scn = new Scanner(System.in);
         User usr = new User();
-        String data[]=new String[3];
-        int count=0;
+        String data[] = new String[3];
+        int count = 0;
         try {
             String SQL2 = " SELECT Student.Student_ID, Student.Full_Name, Student.Department FROM Student"; //INNER JOIN Clearance ON Student.Student_ID = Clearance.Stud_ID
             ResultSet rs3 = usr.connection1().executeQuery(SQL2);
@@ -54,7 +55,7 @@ public class Student {
             boolean found = false;
             while (rs3.next()) {
 
-                    setStudFullName(rs3.getString("Full_Name"));
+                setStudFullName(rs3.getString("Full_Name"));
 
                 setStudID(rs3.getString("Student_ID"));
 
@@ -66,9 +67,9 @@ public class Student {
         } catch (SQLException err) {
             System.out.println(err.getMessage());
 
-}
-        return getFullName()+getDep()+getStudID();
         }
+        return getFullName() + getDep() + getStudID();
+    }
 
 
     public static void main(String[] args) throws Exception {

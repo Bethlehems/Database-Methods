@@ -7,12 +7,10 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.sql.*;
 import java.lang.Object;
-
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import org.json.simple.JSONValue;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,28 +18,10 @@ import java.util.Map;
 
 public class myServer {
 
-    /*public static void main(String[] args) throws Exception {
-        HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
-        server.createContext("/test", new MyHandler());
-        server.start();
-    }
-
-    static class MyHandler implements HttpHandler {
-        @Override
-        public void handle(HttpExchange t) throws IOException {
-            String response = "This is the response";
-            t.sendResponseHeaders(200, response.length());
-            OutputStream os = t.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
-        }
-    }
-
-*/
-    public static String getJSONFromResultSet(ResultSet rs,String keyName) {
+    /* public static String getJSONFromResultSet(String data []) {
 
 
-        Map json = new HashMap();
+       Map json = new HashMap();
         List list = new ArrayList<>();
         if(rs!=null)
         {
@@ -65,10 +45,31 @@ public class myServer {
                 e.printStackTrace();
             }
             json.put(keyName, list);
-        }
-        return JSONValue.toJSONString(json);
-    }
-    static class MyHandler implements HttpHandler {
+
+        return JSONValue.toJSONString(data);
+    }*/
+    static class StudentHandler implements HttpHandler {
+        @Override
+        public void handle(HttpExchange t) throws IOException {
+            try {
+                //Connection con = DriverManager.getConnection("jdbc:mysql://localhost/SampleDb", "root", "made2begr8");
+                Student std=new Student();
+                //Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+                //String SQL = "SELECT * FROM Student";
+                //ResultSet rs =stmt.executeQuery(SQL);
+                String result=JSONValue.toJSONString(std.getClearanceInfo());
+                //System.out.println(result);
+                t.sendResponseHeaders(200, result.length());
+                OutputStream os = t.getResponseBody();
+                os.write(result.getBytes());
+                os.close();
+
+
+            } catch (Exception err) {
+                System.out.println(err.getMessage());
+            }
+        }}
+   /* static class ClearanceHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange t) throws IOException {
             try {
@@ -87,10 +88,11 @@ public class myServer {
             } catch (SQLException err) {
                 System.out.println(err.getMessage());
             }
-        }}
+        }}*/
     public static void main(String[] args) throws Exception{
         HttpServer server = HttpServer.create(new InetSocketAddress(8089), 0);
-        server.createContext("/test", new MyHandler());
+        server.createContext("/student", new StudentHandler());
+        //server.createContext("/clearance", new ClearanceHandler());
         server.start();
 
         try {

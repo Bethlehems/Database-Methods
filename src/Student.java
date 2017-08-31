@@ -27,46 +27,49 @@ public class Student {
         return this.StudID;
     }
 
-    public Year getClassYear() {
+    public void  setDep(String depar) {
 
-        return this.ClassYear;
+        Dep=depar;
     }
 
     public void setStudID(String studID) {
 
         StudID = studID;
     }
+    public void setStudFullName(String name) {
 
-    public void getClearanceInfo() throws Exception {
+        FullName = name;
+    }
+
+    public String getClearanceInfo() throws Exception {
         Scanner scn = new Scanner(System.in);
         User usr = new User();
+        String data[]=new String[3];
+        int count=0;
         try {
-            String SQL2 = " SELECT Student.Student_ID, Student.Full_Name, Clearance.Description FROM Student INNER JOIN Clearance ON Student.Student_ID = Clearance.Stud_ID";
+            String SQL2 = " SELECT Student.Student_ID, Student.Full_Name, Student.Department FROM Student"; //INNER JOIN Clearance ON Student.Student_ID = Clearance.Stud_ID
             ResultSet rs3 = usr.connection1().executeQuery(SQL2);
-            System.out.println("Enter your ID:");
-            String inp = scn.nextLine();
+
 
             boolean found = false;
             while (rs3.next()) {
-                if (rs3.getString("Student_ID").compareTo(inp) == 0) {
 
-                    System.out.println(rs3.getString("Full_Name"));
-                    System.out.println(rs3.getString("Student_ID"));
-                    System.out.println(rs3.getString("Description"));
-                    found = true;
-                    break;
+                    setStudFullName(rs3.getString("Full_Name"));
 
-                }
+                setStudID(rs3.getString("Student_ID"));
+
+                setDep(rs3.getString("Department"));
+
+
             }
-            if (found == false) {
-                System.out.println("Student not found.");
-            }
+
         } catch (SQLException err) {
             System.out.println(err.getMessage());
 
-
+}
+        return getFullName()+getDep()+getStudID();
         }
-    }
+
 
     public static void main(String[] args) throws Exception {
         try {
